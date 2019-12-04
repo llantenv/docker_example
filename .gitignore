@@ -1,0 +1,4 @@
+mysql_db/data
+node_modules
+dist
+package-lock.json

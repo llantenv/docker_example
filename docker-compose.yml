@@ -1,0 +1,49 @@
+version : "3.4"
+
+services:
+
+  db:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: wsqixQxQ
+    volumes:
+      - ./mysql_db/data:/var/lib/mysql
+      - ./mysql_db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - ntExampleDockerDB
+
+  backend:
+    image: node:8
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend_app/src:/usr/app
+    networks:
+      - ntExampleDockerDB
+      - ntExampleDockerBackend
+    working_dir: /usr/app
+    command: npm run start
+
+  cron:
+    image: pjsoto/pyschedule:1.3
+    volumes:
+      - ./cronjob/src:/usr/app
+    networks:
+      - ntExampleDockerBackend
+    working_dir: /usr/app
+    command: python index.py
+    environment:
+      BACKEND_URL: http://backend:3000
+
+  frontend:
+    image: vllanten/example_docker:1.0
+    ports:
+      - "80:80"
+
+networks:
+    ntExampleDockerDB:
+        driver: bridge
+    ntExampleDockerBackend:
+        driver: bridge
