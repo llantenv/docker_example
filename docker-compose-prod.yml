@@ -10,6 +10,7 @@ services:
       MYSQL_ROOT_PASSWORD: wsqixXxX
     volumes:
       - mysql_example_docker_data:/var/lib/mysql
+      - ./mysql_db/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - ntExampleDockerDB
 
@@ -22,10 +23,6 @@ services:
       - ntExampleDockerBackend
     environment:
       NODE_ENV: production
-      username: root
-      password: wsqixXxX
-      database: example_docker
-      host: db
 
   cron:
     image:  vllanten/example_docker_cronjob:1.0

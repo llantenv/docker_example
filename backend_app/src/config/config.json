@@ -8,10 +8,10 @@
     "operatorsAliases": false
   },
   "production": {
-    "username": "",
-    "password": "",
-    "database": "",
-    "host": "",
+    "username": "root",
+    "password": "wsqixXxX",
+    "database": "example_docker",
+    "host": "db",
     "dialect": "mysql",
     "operatorsAliases": false
   }
