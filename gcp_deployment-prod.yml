@@ -1,0 +1,136 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: example-docker-backend-service
+spec:
+  ports:
+  - port: 3000
+    targetPort: 3000
+    protocol: TCP
+  selector:
+    app: example-docker-backend
+  type: LoadBalancer
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: example-docker-frontend-service
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+  selector:
+    app: example-docker-frontend
+  type: LoadBalancer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example-docker-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: example-docker-backend
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: example-docker-backend
+    spec:
+      containers:
+      - env:
+        - name: NODE_ENV
+          valueFrom:
+            configMapKeyRef:
+              key: NODE_ENV
+              name: example-docker-config
+        name: example-docker-backend
+        image: vllanten/example_docker_backend:1.0
+        ports:
+          - containerPort: 3000
+        resources:
+          limits:
+            memory: 512Mi
+          requests:
+            memory: 256Mi
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example-docker-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: example-docker-frontend
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: example-docker-frontend
+    spec:
+      containers:
+      - env:
+        - name: NODE_ENV
+          valueFrom:
+            configMapKeyRef:
+              key: NODE_ENV
+              name: example-docker-config
+        name: example-docker-frontend
+        image: vllanten/example_docker_frontend:1.1
+        ports:
+          - containerPort: 80
+        resources:
+          limits:
+            memory: 512Mi
+          requests:
+            memory: 256Mi
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+
+---
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: example-docker-scaler
+  namespace: default
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: example-docker-backend
+  minReplicas: 1
+  maxReplicas: 1
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      targetAverageUtilization: 80
+
+---
+apiVersion: v1
+data:
+  NODE_ENV: production
+  BACKEND_URL: "http://example-docker-backend-service:3000"
+kind: ConfigMap
+metadata:
+  labels:
+    app: example-docker-backend
+  name: example-docker-config
+

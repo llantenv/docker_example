@@ -22,6 +22,10 @@ services:
       - ntExampleDockerBackend
     environment:
       NODE_ENV: production
+      username: root
+      password: wsqixXxX
+      database: example_docker
+      host: db
 
   cron:
     image:  vllanten/example_docker_cronjob:1.0
