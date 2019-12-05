@@ -10,8 +10,6 @@ services:
       MYSQL_ROOT_PASSWORD: wsqixXxX
     volumes:
       - mysql_example_docker_data:/var/lib/mysql
-    environment:
-      NODE_ENV: production
     networks:
       - ntExampleDockerDB
 
@@ -22,6 +20,8 @@ services:
     networks:
       - ntExampleDockerDB
       - ntExampleDockerBackend
+    environment:
+      NODE_ENV: production
 
   cron:
     image:  vllanten/example_docker_cronjob:1.0
@@ -31,7 +31,7 @@ services:
       BACKEND_URL: http://backend:3000
 
   frontend:
-    image: vllanten/example_docker_frontend:1.0
+    image: vllanten/example_docker_frontend:1.1
     ports:
       - "80:80"
 
