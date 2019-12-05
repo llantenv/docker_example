@@ -37,11 +37,6 @@ services:
     environment:
       BACKEND_URL: http://backend:3000
 
-  frontend:
-    image: vllanten/example_docker:1.0
-    ports:
-      - "80:80"
-
 networks:
     ntExampleDockerDB:
         driver: bridge

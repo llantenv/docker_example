@@ -1,0 +1,46 @@
+version : "3.4"
+
+services:
+
+  db:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: wsqixXxX
+    volumes:
+      - mysql_example_docker_data:/var/lib/mysql
+    environment:
+      NODE_ENV: production
+    networks:
+      - ntExampleDockerDB
+
+  backend:
+    image: vllanten/example_docker_backend:1.0
+    ports:
+      - "3000:3000"
+    networks:
+      - ntExampleDockerDB
+      - ntExampleDockerBackend
+
+  cron:
+    image:  vllanten/example_docker_cronjob:1.0
+    networks:
+      - ntExampleDockerBackend
+    environment:
+      BACKEND_URL: http://backend:3000
+
+  frontend:
+    image: vllanten/example_docker_frontend:1.0
+    ports:
+      - "80:80"
+
+networks:
+  ntExampleDockerDB:
+      driver: overlay
+  ntExampleDockerBackend:
+      driver: overlay
+
+volumes:
+  mysql_example_docker_data:
+    driver: local

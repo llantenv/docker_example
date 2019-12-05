@@ -9,8 +9,8 @@
   },
   "production": {
     "username": "root",
-    "password": null,
-    "database": "",
+    "password": "wsqixXxX",
+    "database": "example_docker",
     "host": "db",
     "dialect": "mysql",
     "operatorsAliases": false

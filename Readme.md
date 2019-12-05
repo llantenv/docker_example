@@ -1,8 +1,19 @@
 
-# start on docker-compose
+# Start on docker-compose
 
-    docker-compose up
+```shell
+docker-compose up
+```
 
 # Inicialize DB
 
-    npx sequelize-cli db:migrate
+```shell
+npx sequelize-cli db:migrate
+```
+
+# Start on DockerSwarm
+
+```shell
+docker swarm init --advertise-addr SERVER-IP
+docker stack deploy -c docker-compose-prod.yml example_docker
+```
