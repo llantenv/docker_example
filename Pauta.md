@@ -15,12 +15,12 @@
             * Logs 
     * Volumenes / Puertos 
         * Persistencia y Exposición 
-    * Construir una imagen personalizada
-        * Dockerfile / Build
-        * Publicar una imagen personalizada a docker-hub
     * Redes
     * Docker-compose
         -> https://docs.docker.com/compose/
+    * Construir una imagen personalizada
+        * Dockerfile / Build
+        * Publicar una imagen personalizada a docker-hub
     * Orquestadores
         * Docker Swarm
                 -> https://docs.docker.com/engine/swarm/swarm-tutorial/ 

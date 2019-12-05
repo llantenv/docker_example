@@ -2,3 +2,7 @@ mysql_db/data
 node_modules
 dist
 package-lock.json
+wordpress/db
+wordpress/html
+wordpress/wp
+wordpress/mysql
